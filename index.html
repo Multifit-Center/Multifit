@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Multifit Check</title>
+
+<style>
+body {
+    background: #0d0d0d;
+    color: white;
+    font-family: Arial;
+    text-align: center;
+}
+
+.container {
+    margin-top: 80px;
+}
+
+input {
+    padding: 12px;
+    width: 250px;
+    font-size: 16px;
+}
+
+button {
+    padding: 12px;
+    width: 270px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.card {
+    background: #1c1c1c;
+    margin: 10px auto;
+    padding: 10px;
+    width: 300px;
+    border-radius: 10px;
+}
+
+.ok {
+    color: #00ff66;
+    font-weight: bold;
+}
+
+.bad {
+    color: red;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🏋️ MULTIFIT CENTER</h1>
+
+<form method="POST">
+    <input name="dni" placeholder="Ingresar DNI">
+    <br>
+    <button type="submit">Consultar</button>
+</form>
+
+<br>
+
+{% if result %}
+
+    {% if result.status == "no_existe" %}
+        <h2>❌ No registrado</h2>
+    {% else %}
+
+        {% for d in result.detalle %}
+
+        <div class="card">
+
+            <h3>{{ d.actividad }}</h3>
+
+            {% if d.estado == "ok" %}
+                <p class="ok">✔ AL DÍA</p>
+            {% else %}
+                <p class="bad">❌ VENCIDO</p>
+            {% endif %}
+
+            <p>Días restantes: {{ d.dias }}</p>
+
+        </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+{% endif %}
+
+</div>
+
+</body>
+</html>

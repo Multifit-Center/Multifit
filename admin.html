@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Multifit Admin</title>
+
+<style>
+body { background:#0b0b0b; color:white; font-family:Arial; }
+.container { max-width:1200px; margin:auto; padding:20px; }
+
+h1 { text-align:center; color:red; }
+
+.card { background:#1a1a1a; padding:10px; margin:10px 0; border-radius:10px; }
+
+input, select, button { padding:8px; margin:5px; }
+
+.tabs { display:flex; gap:8px; flex-wrap:wrap; }
+
+.tab { background:#222; padding:8px; cursor:pointer; border-radius:6px; }
+.tab.active { background:red; }
+
+.section { display:none; }
+.section.active { display:block; }
+
+.client { border-left:4px solid red; padding-left:10px; }
+
+.search { width:100%; padding:10px; }
+</style>
+
+<script>
+function showTab(id){
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+
+    document.getElementById(id).classList.add('active');
+    document.getElementById('tab-'+id).classList.add('active');
+}
+
+function searchClient(){
+    let v=document.getElementById("search").value.toLowerCase();
+    document.querySelectorAll(".client").forEach(c=>{
+        c.style.display = c.innerText.toLowerCase().includes(v) ? "block":"none";
+    });
+}
+</script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🏋️ MULTIFIT ADMIN PRO</h1>
+
+<div class="card">
+<form method="POST">
+    <input name="dni" placeholder="DNI" required>
+    <input name="nombre" placeholder="Nombre" required>
+
+    <select name="actividad">
+        {% for a in actividades_list %}
+        <option>{{ a }}</option>
+        {% endfor %}
+    </select>
+
+    <input name="dias" type="number" placeholder="Días" required>
+    <button>Agregar</button>
+</form>
+</div>
+
+<input class="search" id="search" onkeyup="searchClient()" placeholder="Buscar por DNI o ID socio...">
+
+<div class="tabs">
+    <div class="tab active" id="tab-all" onclick="showTab('all')">Todos</div>
+
+    {% for a in actividades_list %}
+    <div class="tab" id="tab-{{a}}" onclick="showTab('{{a}}')">{{a}}</div>
+    {% endfor %}
+</div>
+
+<!-- TODOS -->
+<div id="all" class="section active">
+
+{% for id,s in socios.items() %}
+<div class="card client">
+
+<b>#{{s.id}} - {{s.nombre}}</b><br>
+DNI: {{s.dni}}
+
+<form method="POST" action="/edit/{{s.id}}">
+    <input name="nombre" placeholder="Editar nombre">
+    <button>Editar</button>
+</form>
+
+<a href="/delete/{{s.id}}"><button style="background:red;color:white;">Eliminar</button></a>
+
+{% for m in s.membresias %}
+<p>{{m.actividad}} - {{m.vencimiento}}</p>
+{% endfor %}
+
+</div>
+{% endfor %}
+
+</div>
+
+<!-- POR ACTIVIDAD -->
+{% for a in actividades_list %}
+<div id="{{a}}" class="section">
+
+{% for s in actividades[a] %}
+<div class="card client">
+<b>#{{s.id}} - {{s.nombre}}</b> ({{s.dni}})
+</div>
+{% endfor %}
+
+</div>
+{% endfor %}
+
+</div>
+
+</body>
+</html>

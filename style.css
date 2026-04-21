@@ -1,0 +1,51 @@
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0f0f0f;
+    color: white;
+    text-align: center;
+}
+
+.logo {
+    font-size: 50px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.logo span {
+    color: red;
+}
+
+.container {
+    margin-top: 40px;
+}
+
+input {
+    padding: 12px;
+    font-size: 18px;
+}
+
+button {
+    padding: 12px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.card {
+    padding: 40px;
+    margin-top: 20px;
+    font-size: 30px;
+}
+
+.green { background: green; }
+.red { background: red; }
+.gray { background: gray; }
+
+.btn-back {
+    margin-top: 20px;
+    display: inline-block;
+    padding: 10px 20px;
+    background: #333;
+    color: white;
+    text-decoration: none;
+}
